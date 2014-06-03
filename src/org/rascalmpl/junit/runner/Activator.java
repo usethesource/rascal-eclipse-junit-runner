@@ -11,6 +11,8 @@
 *******************************************************************************/
 package org.rascalmpl.junit.runner;
 
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
@@ -35,6 +37,34 @@ public class Activator extends AbstractUIPlugin {
 
 	public static Activator getDefault() {
 		return plugin;
+	}
+
+	public static void log(String msg) {
+		getDefault().logMessage(msg);
+	}
+
+	public static void logError(String msg, Throwable t) {
+		getDefault().logException(msg, t);
+	}
+	
+	public void logException(String msg, Throwable t) {
+		if (msg == null) {
+			if (t == null || t.getMessage() == null)
+				msg = "No message given";
+			else
+				msg = t.getMessage();
+		}
+
+		Status status= new Status(IStatus.ERROR, PLUGIN_ID, 0, msg, t);
+
+		getLog().log(status);
+	}
+
+	public void logMessage(String msg) {
+
+		Status status= new Status(IStatus.INFO, PLUGIN_ID, 0, msg, null);
+
+		getLog().log(status);
 	}
 
 }
