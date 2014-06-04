@@ -94,16 +94,9 @@ public class TestNameTranslator {
 		if (project == null) {
 			return;
 		}
-		List<String> roots = tryFindRascalLibraryPaths(project);
-		if (roots.isEmpty()) {
+		IFile fullFileName = findTestFile(project, path);
+		if (fullFileName == null) {
 			return;
-		}
-		IFile fullFileName = null;
-		for (String r : roots) {
-			fullFileName = project.getFile(r + "/" + path);
-			if (fullFileName.exists()) {
-				break;
-			}
 		}
 
 		final FileEditorInput target = new FileEditorInput(fullFileName);
@@ -127,6 +120,20 @@ public class TestNameTranslator {
 				});
 			}
 		}
+	}
+
+	private static IFile findTestFile(final IProject project, String path) {
+		List<String> roots = tryFindRascalLibraryPaths(project);
+		if (roots.isEmpty()) {
+			return null;
+		}
+		for (String r : roots) {
+			IFile fullFileName = project.getFile(r + "/" + path);
+			if (fullFileName.exists()) {
+				return fullFileName;
+			}
+		}
+		return null;
 	}
 	
 	private static List<String> tryFindRascalLibraryPaths(IProject project) {
