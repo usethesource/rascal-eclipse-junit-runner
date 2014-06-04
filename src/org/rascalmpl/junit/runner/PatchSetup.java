@@ -24,9 +24,11 @@ import java.lang.reflect.Field;
 import org.eclipse.jdt.internal.junit.ui.TestRunnerViewPart;
 import org.eclipse.jdt.internal.junit.ui.TestViewer;
 import org.eclipse.jdt.internal.ui.viewsupport.SelectionProviderMediator;
+import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.MenuListener;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.TypedListener;
@@ -97,16 +99,23 @@ public class PatchSetup implements IStartup {
 		if (part instanceof TestRunnerViewPart) {
 			TestRunnerViewPart testpart = (TestRunnerViewPart) part;
 			TestViewer viewer = readField(part, "fTestViewer", TestViewer.class);
-			TreeViewer treeViever = readField(viewer, "fTreeViewer", TreeViewer.class);
-			TableViewer tableViever = readField(viewer, "fTableViewer", TableViewer.class);
+			TreeViewer treeViewer = readField(viewer, "fTreeViewer", TreeViewer.class);
+			TableViewer tableViewer = readField(viewer, "fTableViewer", TableViewer.class);
 
-			TypedListener treeListener = findSelctionListener(treeViever.getTree(), TestViewer.class);
-			TypedListener tableListener = findSelctionListener(tableViever.getTable(), TestViewer.class);
-			if (treeListener == null || tableListener == null)
-				return;
+			TypedListener treeListener = findSelectionListener(treeViewer.getTree(), TestViewer.class);
+			TypedListener tableListener = findSelectionListener(tableViewer.getTable(), TestViewer.class);
 			SelectionProviderMediator selectionProvider = readField(viewer, "fSelectionProvider", SelectionProviderMediator.class);
-			replaceListener(treeViever.getTree(), treeListener, new RascalTestOpenListener(testpart, selectionProvider,treeListener));
-			replaceListener(tableViever.getTable(), tableListener, new RascalTestOpenListener(testpart, selectionProvider,tableListener));
+			if (treeListener != null && tableListener != null) {
+				replaceListener(treeViewer.getTree(), treeListener, new RascalTestOpenListener(testpart, selectionProvider,treeListener));
+				replaceListener(tableViewer.getTable(), tableListener, new RascalTestOpenListener(testpart, selectionProvider,tableListener));
+			}
+
+			TypedListener treeMenuListener = findMenuListener(treeViewer.getTree().getMenu(), MenuManager.class);
+			TypedListener tableMenuListener = findMenuListener(tableViewer.getTable().getMenu(), MenuManager.class);
+			if (treeMenuListener != null && tableMenuListener != null) {
+				replaceMenuListener(treeViewer.getTree().getMenu(), treeMenuListener, new RascalMenuListener(testpart, selectionProvider, treeMenuListener));
+				replaceMenuListener(tableViewer.getTable().getMenu(), tableMenuListener, new RascalMenuListener(testpart, selectionProvider, tableMenuListener));
+			}
 		}
 	}
 
@@ -127,10 +136,24 @@ public class PatchSetup implements IStartup {
 		});
 	}
 
-	private TypedListener findSelctionListener(Widget provider, Class<?> declaringClass) {
+	private TypedListener findSelectionListener(Widget provider, Class<?> declaringClass) {
 		for (Listener o : provider.getListeners(SWT.Selection))
 			if (o instanceof TypedListener && ((TypedListener) o).getEventListener().getClass().getDeclaringClass() == declaringClass)
 				return (TypedListener) o;
+		return null;
+	}
+	private TypedListener findMenuListener(Widget provider, Class<?> declaringClass) {
+		for (Listener o : provider.getListeners(SWT.Show))
+			try {
+				if (o instanceof TypedListener && ((TypedListener) o).getEventListener().getClass().getDeclaredField("this$0").getType() == declaringClass)
+					return (TypedListener) o;
+			} catch (NoSuchFieldException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (SecurityException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		return null;
 	}
 
@@ -139,6 +162,10 @@ public class PatchSetup implements IStartup {
 		provider.removeListener(SWT.DefaultSelection, oldListener);
 		provider.addListener(SWT.Selection, new TypedListener(newListener));
 		provider.addListener(SWT.DefaultSelection, new TypedListener(newListener));
+	}
+	private void replaceMenuListener(Widget provider, TypedListener oldListener, MenuListener newListener) {
+		provider.removeListener(SWT.Show, oldListener);
+		provider.addListener(SWT.Show, new TypedListener(newListener));
 	}
 
 	@SuppressWarnings("unchecked")
