@@ -32,14 +32,6 @@ public class TestNameTranslator {
 	private static final Pattern splitName = Pattern.compile("^([^:]*): <([0-9]*),([0-9]*)>\\(.*");
 	
 	public static boolean isRascalTestElement(TestElement test) {
-		if (test.getParent() != null) {
-			String parent = test.getParent().getTestName();
-			if (parent.contains("::")) {
-				if ( splitName.matcher(test.getTestName()).matches()) {
-					return true;
-				}
-			}
-		}
 		if (test.getTestName().contains("::")) {
 			if (test.getParent() == null || test.getParent() instanceof TestRoot || !test.getParent().getTestName().contains("::")) {
 				// this is root level contain which tends to be a folder
@@ -47,10 +39,25 @@ public class TestNameTranslator {
 			}
 			return true;
 		}
+		if (test.getParent() != null) {
+			String parent = test.getParent().getTestName();
+			if (parent.contains("::")) {
+				return splitName.matcher(test.getTestName()).matches();
+			}
+		}
 		return false;
 	}
 
 	public static boolean tryOpenRascalTest(TestElement test) {
+		if (test.getTestName().contains("::")) {
+			// a test module
+			if (test.getParent() == null || test.getParent() instanceof TestRoot || !test.getParent().getTestName().contains("::")) {
+				// this is root level contain which tends to be a folder
+				return false;
+			}
+			openRascalTest(test.getParentContainer().getTestRunSession(), test.getTestName(), "", 0, 0);
+			return true;
+		}
 		if (test.getParent() != null) {
 			String parent = test.getParent().getTestName();
 			if (parent.contains("::")) {
@@ -62,19 +69,9 @@ public class TestNameTranslator {
 					int offset = Integer.parseInt(name.group(2));
 					int length = Integer.parseInt(name.group(3));
 					openRascalTest(test.getParentContainer().getTestRunSession(), parent, testName, offset, length);
-					//System.out.println("We have a rascal thing: " + parent +"::"+testName + "(" + lineNumber + ")");
 					return true;					
 				}
 			}
-		}
-		if (test.getTestName().contains("::")) {
-			// click on a test module
-			if (test.getParent() == null || test.getParent() instanceof TestRoot || !test.getParent().getTestName().contains("::")) {
-				// this is root level contain which tends to be a folder
-				return false;
-			}
-			openRascalTest(test.getParentContainer().getTestRunSession(), test.getTestName(), "", 0, 0);
-			return true;
 		}
 		return false;
 	}
