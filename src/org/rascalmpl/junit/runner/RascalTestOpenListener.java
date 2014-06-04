@@ -44,7 +44,7 @@ class RascalTestOpenListener extends SelectionAdapter {
 		}
 
 		TestElement testElement = (TestElement) selection.getFirstElement();
-		if (!RascalFileLookup.tryOpenRascalTest(testElement)) {
+		if (!TestNameTranslator.tryOpenRascalTest(testElement)) {
 			oldListener.widgetDefaultSelected(e);
 		}
 	}

@@ -27,7 +27,7 @@ import org.eclipse.ui.part.FileEditorInput;
 import org.eclipse.ui.texteditor.ITextEditor;
 
 @SuppressWarnings("restriction")
-public class RascalFileLookup {
+public class TestNameTranslator {
 
 	private static final Pattern splitName = Pattern.compile("^([^:]*): <([0-9]*),([0-9]*)>\\(.*");
 	

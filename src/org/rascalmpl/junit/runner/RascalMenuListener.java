@@ -39,14 +39,14 @@ public class RascalMenuListener extends MenuAdapter {
 		}
 
 		final TestElement testElement = (TestElement) selection.getFirstElement();
-		if (RascalFileLookup.isRascalTestElement(testElement)) {
+		if (TestNameTranslator.isRascalTestElement(testElement)) {
 			MenuItem gotoFile = ((Menu)e.getSource()).getItem(0);
 			Listener oldListener = gotoFile.getListeners(SWT.Selection)[0];
 			gotoFile.removeListener(SWT.Selection, oldListener);
 			gotoFile.addListener(SWT.Selection, new TypedListener( new SelectionAdapter() {
 				@Override
 				public void widgetSelected(SelectionEvent e) {
-					RascalFileLookup.tryOpenRascalTest(testElement);
+					TestNameTranslator.tryOpenRascalTest(testElement);
 				}
 			}));
 		}
