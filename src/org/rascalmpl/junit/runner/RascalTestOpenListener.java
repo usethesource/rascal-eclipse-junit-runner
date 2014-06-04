@@ -17,6 +17,8 @@ import java.util.regex.Pattern;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.jdt.internal.junit.model.TestElement;
+import org.eclipse.jdt.internal.junit.model.TestRoot;
+import org.eclipse.jdt.internal.junit.model.TestSuiteElement;
 import org.eclipse.jdt.internal.junit.ui.TestRunnerViewPart;
 import org.eclipse.jdt.internal.ui.viewsupport.SelectionProviderMediator;
 import org.eclipse.jface.viewers.IStructuredSelection;
@@ -78,6 +80,10 @@ class RascalTestOpenListener extends SelectionAdapter {
 		}
 		if (testElement.getTestName().contains("::")) {
 			// click on a test module
+			if (testElement.getParent() == null || testElement.getParent() instanceof TestRoot || !testElement.getParent().getTestName().contains("::")) {
+				// this is root level contain which tends to be a folder
+				return ;
+			}
 			openRascalTest(testElement.getTestName(), "", 0, 0);
 			return;
 		}
