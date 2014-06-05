@@ -162,7 +162,7 @@ public class TestNameTranslator {
 			}
 		} catch (CoreException e) {
 		}
-		List<String> result = new ArrayList<>();
+		List<String> result = new ArrayList<String>();
 		result.add("/src/org/rascalmpl/library/");
 		return result;
 	}

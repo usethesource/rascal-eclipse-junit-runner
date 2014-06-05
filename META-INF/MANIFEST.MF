@@ -6,14 +6,15 @@ Bundle-Version: 0.1.0.qualifier
 Bundle-Activator: org.rascalmpl.junit.runner.Activator
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
- org.eclipse.jdt;bundle-version="3.7.0",
- org.eclipse.jdt.junit;bundle-version="3.7.0",
- org.eclipse.jdt.junit4.runtime;bundle-version="1.1.200",
- org.eclipse.jdt.ui;bundle-version="3.7.0",
- org.eclipse.core.resources;bundle-version="3.7.0",
- org.eclipse.ui.ide;bundle-version="3.7.0",
- org.eclipse.ui.workbench.texteditor;bundle-version="3.7.0",
- org.eclipse.jdt.core
-Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+ org.eclipse.jdt,
+ org.eclipse.jdt.junit,
+ org.eclipse.jdt.junit4.runtime,
+ org.eclipse.jdt.ui,
+ org.eclipse.core.resources,
+ org.eclipse.ui.ide,
+ org.eclipse.ui.workbench.texteditor,
+ org.eclipse.jdt.core,
+ org.eclipse.ui.workbench
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ActivationPolicy: lazy
-Export-Package: org.rascalmpl.junit.runner
+Export-Package: org.rascalmpl.junit.runner  
