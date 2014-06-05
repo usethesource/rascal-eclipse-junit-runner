@@ -58,6 +58,13 @@ public class TestNameTranslator {
 		}
 		return false;
 	}
+	
+	public static boolean isRascalSuiteElement(TestElement test) {
+		if (test.getTestName().contains("::")) {
+			return (test.getParent() == null || test.getParent() instanceof TestRoot || !test.getParent().getTestName().contains("::"));
+		}
+		return false;
+	}
 
 	public static boolean tryOpenRascalTest(TestElement test) {
 		if (test.getTestName().contains("::")) {
