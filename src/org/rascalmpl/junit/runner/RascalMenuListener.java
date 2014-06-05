@@ -61,6 +61,10 @@ public class RascalMenuListener extends MenuAdapter {
 				}
 			}));
 		}
+		else if (TestNameTranslator.isRascalSuiteElement(testElement)) {
+			MenuItem gotoFile = ((Menu)e.getSource()).getItem(0);
+			gotoFile.setEnabled(false);
+		}
 	}
 	@Override
 	public void menuHidden(MenuEvent e) {
