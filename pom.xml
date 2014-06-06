@@ -16,19 +16,4 @@
 	<scm>
 		<developerConnection>scm:git:https://github.com/cwi-swat/rascal-eclipse-junit-runner.git</developerConnection>
 	</scm>
-
-	<!-- Used to trigger upstream projects in Jenkins  -->
-	<dependencies>
-		<dependency>
-			<groupId>org.rascalmpl</groupId>
-			<artifactId>rascal</artifactId>
-			<version>0.6.2.qualifier</version>
-		</dependency>
-		<dependency>
-			<groupId>org.rascalmpl</groupId>
-			<artifactId>rascal_eclipse</artifactId>
-			<version>0.6.2.qualifier</version>
-		</dependency>
-	</dependencies>
- 
 </project>
