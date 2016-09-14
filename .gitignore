@@ -11,7 +11,7 @@ local.properties
 .classpath
 .settings/
 .loadpath
-
+.project
 # maven stuff
 target/
 launch/
