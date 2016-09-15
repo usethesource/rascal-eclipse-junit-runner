@@ -4,7 +4,7 @@
 
 	<groupId>org.rascalmpl</groupId>
 	<artifactId>rascal_eclipse_junit_runner</artifactId>
-	<version>0.1.0</version>
+	<version>0.1.1-SNAPSHOT</version>
 	
 	<packaging>eclipse-plugin</packaging>
 
