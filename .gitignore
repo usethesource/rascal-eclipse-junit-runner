@@ -16,3 +16,5 @@ local.properties
 target/
 launch/
 /bin
+# other stuff
+.DS_Store
