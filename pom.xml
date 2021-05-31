@@ -13,43 +13,27 @@
 	</scm>
 
 	<properties>
-		<tycho-version>0.25.0</tycho-version>
+		<tycho-version>1.7.0</tycho-version>
+		<maven.compiler.target>1.8</maven.compiler.target>
+		<maven.compiler.source>1.8</maven.compiler.source>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>		
 	</properties>
-
-	<!-- deployment configuration (usethesource) -->
-	<distributionManagement>
-		<repository>
-			<id>usethesource-releases</id>
-			<url>http://nexus.usethesource.io/content/repositories/releases/</url>
-		</repository>
-		<snapshotRepository>
-			<id>usethesource-snapshots</id>
-			<url>http://nexus.usethesource.io/content/repositories/snapshots/</url>
-		</snapshotRepository>
-	</distributionManagement>
 
 	<repositories>
 		<repository>
 			<id>usethesource</id>
-			<url>http://nexus.usethesource.io/content/repositories/public/</url>
+			<url>http://releases.usethesource.io/maven/</url>
 		</repository>
-
-
-		<repository>
-			<id>neon</id>
-			<layout>p2</layout>
-			<url>http://nexus.usethesource.io/content/repositories/eclipse-neon/</url>
-		</repository>
-		<repository>
-			<id>tm</id>
-			<layout>p2</layout>
-			<url>http://nexus.usethesource.io/content/repositories/tm-terminal-marketplace/</url>
-		</repository>
-		<repository>
-			<id>orbit</id>
-			<layout>p2</layout>
-			<url>http://nexus.usethesource.io/content/repositories/orbit-tools-r20130827064939/</url>
-		</repository>
+        <repository>
+            <id>neon</id>
+            <layout>p2</layout>
+            <url>http://download.eclipse.org/releases/neon/201705151400/</url>
+        </repository>
+        <repository>
+            <id>tm</id>
+            <layout>p2</layout>
+            <url>http://gnu.mirrors.tds.net/pub/eclipse.org/tm/updates/4.5.100-SNAPSHOT/repository/</url>
+        </repository>
 	</repositories>
 
 	<build>
